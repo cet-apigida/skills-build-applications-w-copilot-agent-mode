@@ -21,7 +21,11 @@ function normalizeMeta(payload, items) {
   };
 }
 
-function Leaderboard({ apiBaseUrl }) {
+function Leaderboard() {
+  const apiEndpoint = import.meta.env.VITE_CODESPACE_NAME
+    ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/leaderboard/`
+    : 'http://localhost:8000/api/leaderboard/';
+
   const [items, setItems] = useState([]);
   const [meta, setMeta] = useState({ count: 0, page: null, totalPages: null });
   const [loading, setLoading] = useState(true);
@@ -35,7 +39,7 @@ function Leaderboard({ apiBaseUrl }) {
       setError('');
 
       try {
-        const response = await fetch(`${apiBaseUrl}/leaderboard/`);
+        const response = await fetch(apiEndpoint);
 
         if (!response.ok) {
           throw new Error(`Leaderboard request failed with ${response.status}`);
@@ -64,7 +68,7 @@ function Leaderboard({ apiBaseUrl }) {
     return () => {
       ignore = true;
     };
-  }, [apiBaseUrl]);
+  }, [apiEndpoint]);
 
   return (
     <section className="card border-0 shadow-sm">

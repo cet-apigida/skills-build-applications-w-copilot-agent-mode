@@ -9,7 +9,11 @@ function normalizeItems(payload) {
   return [];
 }
 
-function Teams({ apiBaseUrl }) {
+function Teams() {
+  const apiEndpoint = import.meta.env.VITE_CODESPACE_NAME
+    ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/teams/`
+    : 'http://localhost:8000/api/teams/';
+
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -22,7 +26,7 @@ function Teams({ apiBaseUrl }) {
       setError('');
 
       try {
-        const response = await fetch(`${apiBaseUrl}/teams/`);
+        const response = await fetch(apiEndpoint);
 
         if (!response.ok) {
           throw new Error(`Teams request failed with ${response.status}`);
@@ -49,7 +53,7 @@ function Teams({ apiBaseUrl }) {
     return () => {
       ignore = true;
     };
-  }, [apiBaseUrl]);
+  }, [apiEndpoint]);
 
   return (
     <section className="card border-0 shadow-sm">

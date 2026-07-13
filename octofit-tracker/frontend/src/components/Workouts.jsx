@@ -9,7 +9,11 @@ function normalizeItems(payload) {
   return [];
 }
 
-function Workouts({ apiBaseUrl }) {
+function Workouts() {
+  const apiEndpoint = import.meta.env.VITE_CODESPACE_NAME
+    ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/workouts/`
+    : 'http://localhost:8000/api/workouts/';
+
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -22,7 +26,7 @@ function Workouts({ apiBaseUrl }) {
       setError('');
 
       try {
-        const response = await fetch(`${apiBaseUrl}/workouts/`);
+        const response = await fetch(apiEndpoint);
 
         if (!response.ok) {
           throw new Error(`Workouts request failed with ${response.status}`);
@@ -49,7 +53,7 @@ function Workouts({ apiBaseUrl }) {
     return () => {
       ignore = true;
     };
-  }, [apiBaseUrl]);
+  }, [apiEndpoint]);
 
   return (
     <section className="card border-0 shadow-sm">

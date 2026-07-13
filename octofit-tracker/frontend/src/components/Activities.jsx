@@ -9,7 +9,11 @@ function normalizeItems(payload) {
   return [];
 }
 
-function Activities({ apiBaseUrl }) {
+function Activities() {
+  const apiEndpoint = import.meta.env.VITE_CODESPACE_NAME
+    ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/activities/`
+    : 'http://localhost:8000/api/activities/';
+
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -22,7 +26,7 @@ function Activities({ apiBaseUrl }) {
       setError('');
 
       try {
-        const response = await fetch(`${apiBaseUrl}/activities/`);
+        const response = await fetch(apiEndpoint);
 
         if (!response.ok) {
           throw new Error(`Activities request failed with ${response.status}`);
@@ -49,7 +53,7 @@ function Activities({ apiBaseUrl }) {
     return () => {
       ignore = true;
     };
-  }, [apiBaseUrl]);
+  }, [apiEndpoint]);
 
   return (
     <section className="card border-0 shadow-sm">

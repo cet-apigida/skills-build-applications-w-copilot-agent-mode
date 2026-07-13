@@ -9,7 +9,11 @@ function normalizeItems(payload) {
   return [];
 }
 
-function Users({ apiBaseUrl }) {
+function Users() {
+  const apiEndpoint = import.meta.env.VITE_CODESPACE_NAME
+    ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/users/`
+    : 'http://localhost:8000/api/users/';
+
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -22,7 +26,7 @@ function Users({ apiBaseUrl }) {
       setError('');
 
       try {
-        const response = await fetch(`${apiBaseUrl}/users/`);
+        const response = await fetch(apiEndpoint);
 
         if (!response.ok) {
           throw new Error(`Users request failed with ${response.status}`);
@@ -49,7 +53,7 @@ function Users({ apiBaseUrl }) {
     return () => {
       ignore = true;
     };
-  }, [apiBaseUrl]);
+  }, [apiEndpoint]);
 
   return (
     <section className="card border-0 shadow-sm">
