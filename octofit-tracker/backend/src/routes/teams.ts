@@ -8,7 +8,7 @@ teamsRouter.get('/', async (_req, res) => {
     const items = await Team.find().lean();
     res.json({ resource: 'teams', items });
   } catch (error) {
-    res.status(500).json({ message: 'Failed to fetch teams', error });
+    res.status(500).json({ message: 'Failed to fetch teams' });
   }
 });
 
